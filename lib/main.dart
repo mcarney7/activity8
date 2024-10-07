@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart'; // For sound effects
+import 'dart:async'; // For Timer
 import 'dart:math'; // For random position
 
 void main() {
@@ -32,18 +33,38 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
   bool _isGameOver = false;
   final Random _random = Random();
   int _correctIndex = 0;
-  
+  List<double> _floatingTops = [];
+  List<double> _floatingLefts = [];
+  Timer? _floatingTimer;
+
   @override
   void initState() {
     super.initState();
     // Start spooky background music
     _audioPlayer.play('assets/sound1.mp3', isLocal: true);
     _correctIndex = _random.nextInt(6); // Randomize the "correct" item
+
+    // Initialize random positions for all floating items
+    for (int i = 0; i < 6; i++) {
+      _floatingTops.add(_random.nextDouble() * 400);
+      _floatingLefts.add(_random.nextDouble() * 300);
+    }
+
+    // Start a timer to update the position of all floating items every 2 seconds
+    _floatingTimer = Timer.periodic(Duration(seconds: 2), (Timer timer) {
+      setState(() {
+        for (int i = 0; i < 6; i++) {
+          _floatingTops[i] = _random.nextDouble() * 400;
+          _floatingLefts[i] = _random.nextDouble() * 300;
+        }
+      });
+    });
   }
 
   @override
   void dispose() {
     _audioPlayer.dispose();
+    _floatingTimer?.cancel(); // Cancel the timer when disposing
     super.dispose();
   }
 
@@ -83,28 +104,24 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
   Widget _buildGameItems() {
     List<Widget> items = [];
     for (int i = 0; i < 6; i++) {
-      items.add(_buildGameItem(i));
+      // All items float around, but only one is the correct item
+      items.add(_buildFloatingItem(i));
     }
     return Stack(children: items);
   }
 
-  Widget _buildGameItem(int index) {
-    // Random positions
-    double top = _random.nextDouble() * 400;
-    double left = _random.nextDouble() * 300;
-
-    return Positioned(
-      top: top,
-      left: left,
+  Widget _buildFloatingItem(int index) {
+    // All floating items, including the correct one
+    return AnimatedPositioned(
+      duration: Duration(seconds: 2), // Controls the animation speed
+      top: _floatingTops[index],
+      left: _floatingLefts[index],
       child: GestureDetector(
         onTap: () => _handleItemClick(index),
-        child: AnimatedContainer(
-          duration: Duration(milliseconds: 500),
-          child: Image.asset(
-            index == _correctIndex ? 'assets/image2.png' : 'assets/spooky_character_$index.png',
-            width: 100,
-            height: 100,
-          ),
+        child: Image.asset(
+          'assets/image2.png', // All items are of the same image
+          width: 100,
+          height: 100,
         ),
       ),
     );
