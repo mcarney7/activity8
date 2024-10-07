@@ -37,7 +37,7 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
   void initState() {
     super.initState();
     // Start spooky background music
-    _audioPlayer.play('assets/spooky_music.mp3', isLocal: true);
+    _audioPlayer.play('assets/sound1.mp3', isLocal: true);
     _correctIndex = _random.nextInt(6); // Randomize the "correct" item
   }
 
@@ -50,13 +50,13 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
   void _handleItemClick(int index) {
     if (index == _correctIndex) {
       // Play a "You found it!" sound and show success message
-      _audioPlayer.play('assets/success.mp3', isLocal: true);
+      _audioPlayer.play('assets/sound2.mp3', isLocal: true);
       setState(() {
         _isGameOver = true;
       });
     } else {
       // Play a spooky sound for the trap
-      _audioPlayer.play('assets/jumpscare.mp3', isLocal: true);
+      _audioPlayer.play('assets/sound3.mp3', isLocal: true);
     }
   }
 
