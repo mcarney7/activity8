@@ -43,8 +43,11 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
   @override
   void initState() {
     super.initState();
-    // Start spooky background music
+
+    // Start looping spooky background music
+    _audioPlayer.setReleaseMode(ReleaseMode.LOOP); // Set the release mode to loop
     _audioPlayer.play('assets/sound1.mp3', isLocal: true);
+
     _correctIndex = _random.nextInt(6); // Randomize the "correct" item
 
     // Initialize random positions for all floating items
@@ -124,7 +127,7 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
         child: AnimatedContainer(
           duration: Duration(milliseconds: 500),
           child: Image.asset(
-            index == _correctIndex ? 'assets/image2.png' : 'assets/image2.png',
+            index == _correctIndex ? 'assets/image2.png' : 'assets/image2$index.png',
             width: 100,
             height: 100,
           ),
