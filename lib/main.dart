@@ -70,7 +70,7 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
         children: [
           // Spooky background
           Positioned.fill(
-            child: Image.asset('assets/spooky_background.png', fit: BoxFit.cover),
+            child: Image.asset('assets/image1.png', fit: BoxFit.cover),
           ),
           _isGameOver
               ? Center(child: Text("You Found It!", style: TextStyle(fontSize: 40, color: Colors.orange)))
@@ -101,7 +101,7 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
         child: AnimatedContainer(
           duration: Duration(milliseconds: 500),
           child: Image.asset(
-            index == _correctIndex ? 'assets/hidden_treasure.png' : 'assets/spooky_character_$index.png',
+            index == _correctIndex ? 'assets/image2.png' : 'assets/spooky_character_$index.png',
             width: 100,
             height: 100,
           ),
