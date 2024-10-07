@@ -121,7 +121,7 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
         child: AnimatedContainer(
           duration: Duration(milliseconds: 500),
           child: Image.asset(
-            index == _correctIndex ? 'assets/image2.png' : 'assets/spooky_character_$index.png',
+            index == _correctIndex ? 'assets/image2.png' : 'assets/image2$index.png',
             width: 100,
             height: 100,
           ),
